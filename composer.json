@@ -1,0 +1,47 @@
+{
+    "name": "test/app",
+    "description": "This a fulfillment for the given test",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "App\\Controllers\\" : "app/http/Controllers",
+            "App\\Request\\" : "app/http/Request",
+            "App\\Response\\" : "app/http/Response",
+            "App\\Services\\" : "app/services",
+            "App\\Handlers\\" : "app/handlers",
+            "App\\Models\\" : "app/models"
+
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Udara Dikwatta",
+            "email": "udaradikwatta@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4|8.0",
+        "facebook/graph-sdk": "^5.1",
+        "guzzlehttp/guzzle": "^7.3.0",
+        "webmozart/assert": "^1.10",
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "fzaninotto/faker": "^1.9.1",
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

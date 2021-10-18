@@ -1,0 +1,61 @@
+version: "3.5"
+services:
+  api:
+    build:
+      dockerfile: etc/php/Dockerfile
+      context: .
+    container_name: api_service
+    restart: unless-stopped
+    networks:
+      - backend
+    expose:
+      - 9000
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www/html/
+      - ./etc/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+
+  web:
+    build:
+      dockerfile: etc/web/Dockerfile
+      context: .
+    container_name: web_service
+    depends_on:
+      - api
+      - db
+    ports:
+      - ${HOST_WEB_PORT}:443
+    restart: unless-stopped
+    networks:
+      - backend
+    extra_hosts:
+      - "local.fbapi.com:127.0.0.1"
+    hostname: api
+    domainname: api.local
+    volumes:
+      - ./:/var/www/html/
+
+  db:
+    image: "mysql:8.0"
+    container_name: api_db
+    restart: unless-stopped
+    command: "--default-authentication-plugin=mysql_native_password"
+    networks:
+      - backend
+    ports:
+      - ${HOST_DB_PORT}:3306
+    volumes:
+      - "db_mysql_data:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+networks:
+  backend:
+
+volumes:
+    db_mysql_data:
+      driver: local
